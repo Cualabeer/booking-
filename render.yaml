@@ -3,15 +3,22 @@ services:
     name: booking-app
     env: node
     plan: free
-    buildCommand: "npm install"
-    startCommand: "node server.js"
-    autoDeploy: true
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: booking-db
+          name: bookings-db
           property: connectionString
+      - key: PORT
+        value: 3000
+    autoDeploy: true
+    branch: main
 
 databases:
-  - name: booking-db
+  - name: bookings-db
     plan: free
+    region: oregon
+    databaseName: bookings_zbpm
+    userName: bookings_zbpm_user
+    password: 4mi6P0dpD0uxb5VU9VXie4mjXQhYZgcB
