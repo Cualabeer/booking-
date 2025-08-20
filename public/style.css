@@ -1,5 +1,9 @@
 /* General Reset */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 /* Body Styling */
 body {
@@ -26,16 +30,18 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
-#userTypeToggle button:hover { background: #0056b3; }
+#userTypeToggle button:hover { 
+  background: #0056b3; 
+}
 
 /* Customer Form */
 #customerSection {
   width: 100%;
   max-width: 600px;
   background: white;
-  padding: 20px;
+  padding: 25px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
   margin-bottom: 40px;
 }
 form input, form select, form textarea, form button {
@@ -54,16 +60,18 @@ form button {
   cursor: pointer;
   transition: background 0.3s ease;
 }
-form button:hover { background: #218838; }
+form button:hover { 
+  background: #218838; 
+}
 
 /* Admin Section */
 #adminSection {
   width: 100%;
   max-width: 1000px;
   background: white;
-  padding: 20px;
+  padding: 25px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
 
 /* Admin Header */
@@ -91,24 +99,32 @@ form button:hover { background: #218838; }
   color: white;
   transform: translateX(100%);
   transition: transform 0.3s ease;
-  padding: 30px 20px;
+  padding: 40px 20px;
   z-index: 1000;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* one button per row */
+  gap: 15px; /* spacing between buttons */
+  overflow-y: auto; /* scroll if many options */
 }
-#adminNav.show { transform: translateX(0); }
+#adminNav.show { 
+  transform: translateX(0); 
+}
 #adminNav button {
-  margin-bottom: 15px;
-  padding: 12px;
+  display: block;
+  width: 100%; /* full width */
+  padding: 15px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
   background: #007bff;
   color: white;
   cursor: pointer;
-  transition: background 0.3s;
+  text-align: left; /* align text left */
+  transition: background 0.3s ease;
 }
-#adminNav button:hover { background: #0056b3; }
+#adminNav button:hover {
+  background: #0056b3;
+}
 
 /* Bookings Table */
 #bookingsView {
@@ -129,10 +145,26 @@ th {
   color: white;
 }
 
-/* Responsive */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-  #customerSection, #adminSection { width: 95%; padding: 15px; }
-  form input, form select, form textarea, form button { font-size: 14px; padding: 10px; }
-  th, td { font-size: 14px; padding: 8px; }
-  #adminNav { width: 200px; padding: 20px; }
+  #customerSection, #adminSection {
+    width: 95%;
+    padding: 15px;
+  }
+  form input, form select, form textarea, form button {
+    font-size: 14px;
+    padding: 10px;
+  }
+  th, td {
+    font-size: 14px;
+    padding: 8px;
+  }
+  #adminNav {
+    width: 220px;
+    padding: 30px 15px;
+  }
+  #adminNav button {
+    font-size: 14px;
+    padding: 12px;
+  }
 }
