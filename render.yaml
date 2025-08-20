@@ -1,5 +1,5 @@
 services:
-  - type: web                # must be "web" for Render to detect open port
+  - type: web
     name: booking-app
     env: node
     plan: free
@@ -8,15 +8,5 @@ services:
     envVars:
       - key: DATABASE_URL
         value: postgresql://bookings_zbpm_user:4mi6P0dpD0uxb5VU9VXie4mjXQhYZgcB@dpg-d2iv5hmr433s73e9tfhg-a.oregon-postgres.render.com:5432/bookings_zbpm
-      - key: PORT
-        value: 10000       # optional, Render overrides this automatically anyway
     autoDeploy: true
     branch: main
-
-databases:
-  - name: bookings-db
-    plan: free
-    region: oregon
-    databaseName: bookings_zbpm
-    userName: bookings_zbpm_user
-    password: 4mi6P0dpD0uxb5VU9VXie4mjXQhYZgcB
