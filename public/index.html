@@ -1,24 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Car Service Booking</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Booking App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Book a Service</h1>
-<form id="bookingForm">
-  <input type="text" name="name" placeholder="Name" required>
-  <input type="number" name="phone" placeholder="Phone Number" required>
-  <input type="text" name="number_plate" placeholder="Number Plate (max 7 chars)" maxlength="7" pattern="[A-Za-z0-9]{1,7}" required>
-  <input type="text" name="car_model" placeholder="Car Model">
-  <input type="date" name="date" required>
-  <input type="time" name="time" required>
-  <select name="service" required></select>
-  <textarea name="notes" placeholder="Additional Notes"></textarea>
-  <button type="submit">Book Now</button>
-</form>
-<script src="script.js"></script>
+  <!-- Toggle Buttons -->
+  <div id="userTypeToggle">
+    <button id="customerBtn">Customer</button>
+    <button id="adminBtn">Admin</button>
+  </div>
+
+  <!-- Customer Section -->
+  <div id="customerSection">
+    <h1>Book a Service</h1>
+    <form id="bookingForm">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="number" name="phone" placeholder="Phone Number" required>
+      <input type="text" name="number_plate" placeholder="Number Plate (max 7 chars)" maxlength="7" pattern="[A-Za-z0-9]{1,7}" required>
+      <input type="text" name="car_model" placeholder="Car Model">
+      <input type="date" name="date" required>
+      <input type="time" name="time" required>
+      <select name="service" required></select>
+      <textarea name="notes" placeholder="Additional Notes"></textarea>
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
+
+  <!-- Admin Section -->
+  <div id="adminSection" style="display:none;">
+    <div id="adminHeader">
+      <button id="burgerBtn">&#9776;</button>
+      <h2>Admin Panel</h2>
+    </div>
+
+    <!-- Off-canvas menu -->
+    <nav id="adminNav" class="hidden">
+      <button id="resetDbBtn">Reset Database</button>
+      <button id="addTestDataBtn">Add Test Data</button>
+    </nav>
+
+    <!-- Bookings Table -->
+    <div id="bookingsView">
+      <h3>Bookings</h3>
+      <table id="bookingsTable">
+        <thead>
+          <tr>
+            <th>Name</th><th>Phone</th><th>Number Plate</th><th>Car Model</th>
+            <th>Date</th><th>Time</th><th>Service</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
