@@ -37,7 +37,7 @@ body {
 }
 #userTypeToggle button:hover { background: #0056b3; }
 
-/* Customer Form */
+/* Customer Form
 #customerSection {
   width: 100%;
   max-width: none;
@@ -64,7 +64,33 @@ form button {
   cursor: pointer;
   transition: background 0.3s ease;
 }
-form button:hover { background: #218838; }
+form button:hover { background: #218838; }*/
+/* Mobile-first */
+#customerSection {
+  width: 95%;           /* nearly full screen */
+  max-width: none;      /* remove strict max-width */
+  padding: 20px;
+  margin: 10px auto;    /* small margin on top/bottom */
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+#bookingForm input,
+#bookingForm select,
+#bookingForm textarea,
+#bookingForm button {
+  width: 100%;
+  padding: 18px;         /* bigger for easier tapping */
+  font-size: 18px;       /* larger text for readability */
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+#bookingForm button {
+  font-size: 20px;       /* bigger button text */
+  padding: 18px;
+}
 
 /* Admin Section */
 #adminSection {
