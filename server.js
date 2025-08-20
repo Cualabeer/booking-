@@ -5,6 +5,7 @@ import { resetDatabase } from "./resetDatabase.js";
 
 dotenv.config();
 const app = express();
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
@@ -14,13 +15,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// Get all services
+// API routes (same as before)
 app.get("/api/services", async (req, res) => {
   const { rows } = await pool.query("SELECT * FROM services ORDER BY id");
   res.json(rows);
 });
 
-// Book a service
 app.post("/api/book", async (req, res) => {
   const { name, phone, service } = req.body;
   await pool.query(
@@ -30,7 +30,6 @@ app.post("/api/book", async (req, res) => {
   res.json({ success: true, message: "Booking confirmed!" });
 });
 
-// Admin: Reset / seed database
 app.post("/api/admin/reset-database", async (req, res) => {
   try {
     const services = [
@@ -51,11 +50,13 @@ app.post("/api/admin/reset-database", async (req, res) => {
   }
 });
 
-// List all bookings (admin)
 app.get("/api/bookings", async (req, res) => {
   const { rows } = await pool.query("SELECT * FROM bookings ORDER BY id DESC");
   res.json(rows);
 });
 
+// ✅ Bind to Render's port
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Booking app running on port ${PORT}`);
+});
