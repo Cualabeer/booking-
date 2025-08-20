@@ -1,112 +1,61 @@
 import express from "express";
-import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import pkg from "pg";
+import { Pool } from "pg";
+import { resetDatabase } from "./resetDatabase.js";
 
 dotenv.config();
-const { Pool } = pkg;
-
 const app = express();
-const port = process.env.PORT || 3000;
-
-// Parse form bodies
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("views"));
-
-// Postgres pool (Render Postgres requires SSL)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-// Create table on startup
-async function init() {
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS bookings (
-      id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL,
-      phone TEXT NOT NULL,
-      service TEXT NOT NULL,
-      date DATE NOT NULL,
-      time TIME NOT NULL
-    )
-  `);
-}
-init().catch(err => {
-  console.error("Failed to init DB:", err);
-  process.exit(1);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+// Get all services
+app.get("/api/services", async (req, res) => {
+  const { rows } = await pool.query("SELECT * FROM services ORDER BY id");
+  res.json(rows);
 });
 
-// Homepage booking form
-app.get("/", (req, res) => {
-  res.sendFile("index.html", { root: "views" });
-});
-
-// Admin/staff view: list bookings
-app.get("/bookings", async (req, res) => {
-  const { rows } = await pool.query(
-    "SELECT id, name, phone, service, date, time FROM bookings ORDER BY date, time"
-  );
-
-  let html = `
-    <h1>Bookings</h1>
-    <a href="/">New Booking</a>
-    <table border="1" cellpadding="6" cellspacing="0" style="margin-top:10px;">
-      <tr>
-        <th>ID</th><th>Name</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Action</th>
-      </tr>
-  `;
-
-  for (const b of rows) {
-    html += `
-      <tr>
-        <td>${b.id}</td>
-        <td>${escapeHtml(b.name)}</td>
-        <td>${escapeHtml(b.phone)}</td>
-        <td>${escapeHtml(b.service)}</td>
-        <td>${b.date}</td>
-        <td>${b.time}</td>
-        <td>
-          <form action="/delete/${b.id}" method="POST" style="display:inline;">
-            <button type="submit">Delete</button>
-          </form>
-        </td>
-      </tr>
-    `;
-  }
-
-  html += "</table>";
-  res.send(html);
-});
-
-// Handle booking submission (online or phone)
-app.post("/book", async (req, res) => {
-  const { name, phone, service, date, time } = req.body;
-
+// Book a service
+app.post("/api/book", async (req, res) => {
+  const { name, phone, service } = req.body;
   await pool.query(
-    "INSERT INTO bookings (name, phone, service, date, time) VALUES ($1, $2, $3, $4::date, $5::time)",
-    [name, phone, service, date, time]
+    "INSERT INTO bookings (name, phone, service) VALUES ($1, $2, $3)",
+    [name, phone, service]
   );
-
-  res.redirect("/bookings");
+  res.json({ success: true, message: "Booking confirmed!" });
 });
 
-// Delete a booking
-app.post("/delete/:id", async (req, res) => {
-  await pool.query("DELETE FROM bookings WHERE id = $1", [req.params.id]);
-  res.redirect("/bookings");
+// Admin: Reset / seed database
+app.post("/api/admin/reset-database", async (req, res) => {
+  try {
+    const services = [
+      { name: "Oil Change", price: 50, hours: 1, desc: "Full oil and filter service" },
+      { name: "Brake Job", price: 120, hours: 2, desc: "Pads, discs, and fluid replacement" },
+      { name: "Diagnostics / ECU", price: 80, hours: 3, desc: "Engine and ECU diagnostics" },
+      { name: "Wheel Alignment", price: 60, hours: 1.5, desc: "Full 4-wheel alignment" },
+      { name: "Air Conditioning", price: 70, hours: 2, desc: "AC recharge and inspection" },
+      { name: "Tyres Replacement", price: 100, hours: 1.5, desc: "New tyres and balancing" },
+      { name: "Bodywork / Paint", price: 300, hours: 5, desc: "Minor repairs and paintwork" },
+      { name: "Performance Upgrade", price: 200, hours: 4, desc: "Tuning and performance enhancements" },
+    ];
+    await resetDatabase(services);
+    res.json({ success: true, message: "Database reset and seeded successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Database reset failed!" });
+  }
 });
 
-// Tiny helper to avoid HTML injection in the table
-function escapeHtml(str = "") {
-  return String(str)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-app.listen(port, () => {
-  console.log(`Booking app running at http://localhost:${port}`);
+// List all bookings (admin)
+app.get("/api/bookings", async (req, res) => {
+  const { rows } = await pool.query("SELECT * FROM bookings ORDER BY id DESC");
+  res.json(rows);
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
