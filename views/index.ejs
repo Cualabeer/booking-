@@ -1,0 +1,31 @@
+<h2>Book a Service</h2>
+<form id="bookingForm" action="/book" method="POST">
+  <input type="text" name="name" placeholder="Your Name" required />
+  <input type="text" name="phone" placeholder="Phone" required />
+
+  <select id="serviceSelect" name="service" required>
+    <option value="">Select Service</option>
+    <% services.forEach(s => { %>
+      <option value="<%= s.name %>" data-price="<%= s.price %>" data-hours="<%= s.estimated_hours %>">
+        <%= s.name %> - £<%= s.price %>
+      </option>
+    <% }) %>
+  </select>
+
+  <p id="savingsDisplay">Estimated Savings: £0.00</p>
+  <button type="submit">Book Now</button>
+</form>
+
+<script>
+  const select = document.getElementById("serviceSelect");
+  const display = document.getElementById("savingsDisplay");
+  const laborRate = <%= laborRate %>;
+
+  select.addEventListener("change", () => {
+    const option = select.selectedOptions[0];
+    const price = parseFloat(option.dataset.price || 0);
+    const hours = parseFloat(option.dataset.hours || 0);
+    const savings = Math.max((hours * laborRate) - price, 0).toFixed(2);
+    display.textContent = `Estimated Savings: £${savings}`;
+  });
+</script>
