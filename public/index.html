@@ -1,1 +1,24 @@
-<!-- index.html content here -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Service Booking</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Book a Service</h1>
+<form id="bookingForm">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="number" name="phone" placeholder="Phone Number" required>
+  <input type="text" name="number_plate" placeholder="Number Plate (max 7 chars)" maxlength="7" pattern="[A-Za-z0-9]{1,7}" required>
+  <input type="text" name="car_model" placeholder="Car Model">
+  <input type="date" name="date" required>
+  <input type="time" name="time" required>
+  <select name="service" required></select>
+  <textarea name="notes" placeholder="Additional Notes"></textarea>
+  <button type="submit">Book Now</button>
+</form>
+<script src="script.js"></script>
+</body>
+</html>
