@@ -1,5 +1,5 @@
 services:
-  - type: web
+  - type: web                # must be "web" for Render to detect open port
     name: booking-app
     env: node
     plan: free
@@ -7,11 +7,9 @@ services:
     startCommand: npm start
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: bookings-db
-          property: connectionString
+        value: postgresql://bookings_zbpm_user:4mi6P0dpD0uxb5VU9VXie4mjXQhYZgcB@dpg-d2iv5hmr433s73e9tfhg-a.oregon-postgres.render.com:5432/bookings_zbpm
       - key: PORT
-        value: 3000
+        value: 10000       # optional, Render overrides this automatically anyway
     autoDeploy: true
     branch: main
 
