@@ -1,12 +1,1 @@
-services:
-  - type: web
-    name: booking-app
-    env: node
-    plan: free
-    buildCommand: npm install
-    startCommand: npm start
-    envVars:
-      - key: DATABASE_URL
-        value: postgresql://bookings_zbpm_user:4mi6P0dpD0uxb5VU9VXie4mjXQhYZgcB@dpg-d2iv5hmr433s73e9tfhg-a.oregon-postgres.render.com:5432/bookings_zbpm
-    autoDeploy: true
-    branch: main
+# render.yaml content here
