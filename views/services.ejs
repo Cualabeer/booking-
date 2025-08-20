@@ -1,0 +1,33 @@
+<h2>Manage Services</h2>
+
+<h3>Add New Service</h3>
+<form action="/services/add" method="POST">
+  <input type="text" name="name" placeholder="Service Name" required />
+  <input type="number" step="0.01" name="price" placeholder="Price" required />
+  <input type="number" step="0.1" name="estimated_hours" placeholder="Estimated Hours" required />
+  <input type="text" name="description" placeholder="Description" />
+  <button type="submit">Add Service</button>
+</form>
+
+<h3>Existing Services</h3>
+<table>
+  <tr>
+    <th>Name</th><th>Price</th><th>Hours</th><th>Description</th><th>Actions</th>
+  </tr>
+  <% services.forEach(s => { %>
+  <tr>
+    <form action="/services/edit/<%= s.id %>" method="POST">
+      <td><input type="text" name="name" value="<%= s.name %>" /></td>
+      <td><input type="number" step="0.01" name="price" value="<%= s.price %>" /></td>
+      <td><input type="number" step="0.1" name="estimated_hours" value="<%= s.estimated_hours %>" /></td>
+      <td><input type="text" name="description" value="<%= s.description %>" /></td>
+      <td>
+        <button type="submit">Edit</button>
+    </form>
+        <form action="/services/delete/<%= s.id %>" method="POST" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+  </tr>
+  <% }) %>
+</table>
