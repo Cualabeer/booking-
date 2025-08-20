@@ -1,0 +1,25 @@
+<h2>Bookings</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>Service</th>
+    <th>Price (£)</th>
+    <th>Estimated Savings (£)</th>
+    <th>Action</th>
+  </tr>
+  <% bookings.forEach(b => { %>
+    <tr>
+      <td><%= b.name %></td>
+      <td><%= b.phone %></td>
+      <td><%= b.service_name %></td>
+      <td><%= b.price %></td>
+      <td><%= b.savings %></td>
+      <td>
+        <form action="/delete/<%= b.id %>" method="POST">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</table>
