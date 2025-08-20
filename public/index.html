@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Booking App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tabs">
+    <button class="tab-btn" onclick="openTab('booking')">Booking</button>
+    <button class="tab-btn" onclick="openTab('admin')">Admin</button>
+  </div>
+
+  <div id="bookingTab" class="tab-content">
+    <h1>Book a Service</h1>
+    <form id="bookingForm">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="text" name="phone" placeholder="Phone" required />
+      <select name="services" id="serviceSelect" multiple></select>
+      <p id="savingsDisplay"></p>
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
+
+  <div id="adminTab" class="tab-content">
+    <h2>Admin Panel</h2>
+    <button id="resetDbBtn">Reset / Seed Database</button>
+    <p id="adminMessage"></p>
+  </div>
+
+<script>
+let servicesData = [];
+
+async function loadServices() {
+  const res = await fetch("/api/services");
+  const services = await res.json();
+  servicesData = services;
+  const select = document.getElementById("serviceSelect");
+  services.forEach(s => {
+    const option = document.createElement("option");
+    option.value = s.id;
+    option.textContent = `${s.name} ($${s.price})`;
+    select.appendChild(option);
+  });
+  updateSavings();
+}
+
+function updateSavings() {
+  const select = document.getElementById("serviceSelect");
+  const selectedIds = Array.from(select.selectedOptions).map(o => parseInt(o.value));
+  const selectedServices = servicesData.filter(s => selectedIds.includes(s.id));
+  const totalSavings = selectedServices.reduce((sum, s) => sum + s.estimated_hours * 35, 0);
+  document.getElementById("savingsDisplay").textContent =
+    `Total Customer Savings: $${totalSavings.toFixed(2)}`;
+}
+
+document.getElementById("serviceSelect").addEventListener("change", updateSavings);
+
+document.getElementById("bookingForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const select = document.getElementById("serviceSelect");
+  const selectedIds = Array.from(select.selectedOptions).map(o => parseInt(o.value));
+  const selectedServices = servicesData.filter(s => selectedIds.includes(s.id));
+
+  const data = {
+    name: e.target.name.value,
+    phone: e.target.phone.value,
+    service: selectedServices.map(s => s.name).join(", ")
+  };
+
+  const res = await fetch("/api/book", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  const json = await res.json();
+  const totalSavings = selectedServices.reduce((sum, s) => sum + s.estimated_hours * 35, 0);
+
+  alert(`${json.message}\nTotal Estimated Savings: $${totalSavings.toFixed(2)}`);
+});
+
+document.getElementById("resetDbBtn").addEventListener("click", async () => {
+  if (!confirm("Are you sure you want to reset the database? This will delete all existing bookings!")) return;
+
+  const btn = document.getElementById("resetDbBtn");
+  const msg = document.getElementById("adminMessage");
+
+  btn.disabled = true;
+  msg.textContent = "Initializing database...";
+
+  try {
+    const res = await fetch("/api/admin/reset-database", { method: "POST" });
+    const json = await res.json();
+    msg.textContent = json.success ? json.message : "Error: " + json.message;
+  } catch (err) {
+    msg.textContent = "Error resetting database!";
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+function openTab(tab) {
+  document.getElementById("bookingTab").style.display = tab === 'booking' ? 'block' : 'none';
+  document.getElementById("adminTab").style.display = tab === 'admin' ? 'block' : 'none';
+}
+
+openTab('booking'); // default tab
+loadServices();
+</script>
+</body>
+</html>
