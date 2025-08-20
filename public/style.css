@@ -9,68 +9,69 @@
 body {
   font-family: Arial, sans-serif;
   background: #f0f2f5;
-  padding: 20px;
-  min-height: 100vh;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
 }
 
 /* Toggle Buttons */
 #userTypeToggle {
   margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 #userTypeToggle button {
-  margin-right: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+  flex: 1;
+  padding: 12px 0;
+  font-size: 18px;
   border: 1px solid #007bff;
   background: #007bff;
   color: white;
   border-radius: 5px;
   cursor: pointer;
 }
-#userTypeToggle button:hover { 
-  background: #0056b3; 
-}
+#userTypeToggle button:hover { background: #0056b3; }
 
 /* Customer Form */
 #customerSection {
-  width: 100%;
-  max-width: 600px;
+  width: 95%;
+  max-width: 500px;
   background: white;
-  padding: 25px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 10px;
   box-shadow: 0 0 12px rgba(0,0,0,0.1);
   margin-bottom: 40px;
 }
 form input, form select, form textarea, form button {
   display: block;
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
+  padding: 14px;
+  margin: 12px 0;
   font-size: 16px;
-  border-radius: 5px;
+  border-radius: 8px;
   border: 1px solid #ccc;
 }
 form button {
   background: #28a745;
   color: white;
   border: none;
+  font-size: 18px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
-form button:hover { 
-  background: #218838; 
-}
+form button:hover { background: #218838; }
 
 /* Admin Section */
 #adminSection {
-  width: 100%;
-  max-width: 1000px;
+  width: 95%;
+  max-width: 900px;
   background: white;
-  padding: 25px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 10px;
   box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
 
@@ -93,7 +94,8 @@ form button:hover {
   position: fixed;
   top: 0;
   right: 0;
-  width: 260px;
+  width: 80%;
+  max-width: 260px;
   height: 100%;
   background: #343a40;
   color: white;
@@ -104,14 +106,12 @@ form button:hover {
   display: flex;
   flex-direction: column; /* one button per row */
   gap: 15px; /* spacing between buttons */
-  overflow-y: auto; /* scroll if many options */
+  overflow-y: auto;
 }
-#adminNav.show { 
-  transform: translateX(0); 
-}
+#adminNav.show { transform: translateX(0); }
 #adminNav button {
   display: block;
-  width: 100%; /* full width */
+  width: 100%;
   padding: 15px;
   font-size: 16px;
   border: none;
@@ -119,16 +119,15 @@ form button:hover {
   background: #007bff;
   color: white;
   cursor: pointer;
-  text-align: left; /* align text left */
+  text-align: left;
   transition: background 0.3s ease;
 }
-#adminNav button:hover {
-  background: #0056b3;
-}
+#adminNav button:hover { background: #0056b3; }
 
 /* Bookings Table */
 #bookingsView {
   overflow-x: auto;
+  margin-top: 20px;
 }
 table {
   width: 100%;
@@ -140,31 +139,15 @@ th, td {
   padding: 12px;
   text-align: left;
 }
-th {
-  background: #007bff;
-  color: white;
-}
+th { background: #007bff; color: white; }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  #customerSection, #adminSection {
-    width: 95%;
-    padding: 15px;
-  }
-  form input, form select, form textarea, form button {
-    font-size: 14px;
-    padding: 10px;
-  }
-  th, td {
-    font-size: 14px;
-    padding: 8px;
-  }
-  #adminNav {
-    width: 220px;
-    padding: 30px 15px;
-  }
-  #adminNav button {
-    font-size: 14px;
-    padding: 12px;
-  }
+/* Larger screens adjustments */
+@media (min-width: 600px) {
+  #customerSection, #adminSection { max-width: 600px; }
+  form input, form select, form textarea, form button { font-size: 17px; padding: 14px; }
+}
+@media (min-width: 900px) {
+  #customerSection { max-width: 500px; }
+  #adminSection { max-width: 900px; }
+  #userTypeToggle button { font-size: 16px; padding: 10px 0; }
 }
