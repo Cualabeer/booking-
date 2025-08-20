@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booking Form</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <h1>Book a Service</h1>
+  <form action="/book" method="POST">
+    <label>Name:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Phone:</label><br>
+    <input type="text" name="phone" required><br><br>
+
+    <label>Service:</label><br>
+    <input type="text" name="service" required><br><br>
+
+    <label>Date:</label><br>
+    <input type="date" name="date" required><br><br>
+
+    <label>Time:</label><br>
+    <input type="time" name="time" required><br><br>
+
+    <button type="submit">Book</button>
+  </form>
+  <br>
+  <a href="/bookings">View Bookings</a>
+</body>
+</html>
