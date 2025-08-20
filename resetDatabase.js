@@ -7,33 +7,40 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-export async function resetDatabase(services) {
+export async function resetDatabase(services = []) {
   await pool.query(`DROP TABLE IF EXISTS bookings`);
   await pool.query(`DROP TABLE IF EXISTS services`);
 
   await pool.query(`
     CREATE TABLE services (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(100) NOT NULL,
-      price NUMERIC(8,2) DEFAULT 0,
-      estimated_hours NUMERIC(4,2) DEFAULT 1,
+      name TEXT NOT NULL,
+      price NUMERIC NOT NULL,
+      estimated_hours NUMERIC NOT NULL,
       description TEXT
-    )
-  `);
-
-  await pool.query(`
-    CREATE TABLE bookings (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(100),
-      phone VARCHAR(50),
-      service VARCHAR(100)
     )
   `);
 
   for (let s of services) {
     await pool.query(
-      "INSERT INTO services (name, price, estimated_hours, description) VALUES ($1, $2, $3, $4)",
+      "INSERT INTO services (name, price, estimated_hours, description) VALUES ($1,$2,$3,$4)",
       [s.name, s.price, s.hours, s.desc]
     );
   }
+
+  await pool.query(`
+    CREATE TABLE bookings (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      phone TEXT NOT NULL,
+      car_model TEXT,
+      date TEXT,
+      time TEXT,
+      service TEXT NOT NULL,
+      notes TEXT
+    )
+  `);
+
+  await pool.end();
+  console.log("Database reset and seeded successfully!");
 }
