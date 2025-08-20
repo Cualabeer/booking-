@@ -26,6 +26,19 @@
     <h2>Admin Panel</h2>
     <button id="resetDbBtn">Reset / Seed Database</button>
     <p id="adminMessage"></p>
+
+    <h3>All Bookings</h3>
+    <table id="bookingsTable" border="1" style="width:100%; margin-top:10px">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
 <script>
@@ -93,6 +106,7 @@ document.getElementById("resetDbBtn").addEventListener("click", async () => {
     const res = await fetch("/api/admin/reset-database", { method: "POST" });
     const json = await res.json();
     msg.textContent = json.success ? json.message : "Error: " + json.message;
+    loadBookings();
   } catch (err) {
     msg.textContent = "Error resetting database!";
   } finally {
@@ -100,9 +114,31 @@ document.getElementById("resetDbBtn").addEventListener("click", async () => {
   }
 });
 
+async function loadBookings() {
+  try {
+    const res = await fetch("/api/bookings");
+    const bookings = await res.json();
+    const tbody = document.querySelector("#bookingsTable tbody");
+    tbody.innerHTML = "";
+    bookings.forEach(b => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${b.id}</td>
+        <td>${b.name}</td>
+        <td>${b.phone}</td>
+        <td>${b.service}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  } catch (err) {
+    console.error("Failed to load bookings:", err);
+  }
+}
+
 function openTab(tab) {
   document.getElementById("bookingTab").style.display = tab === 'booking' ? 'block' : 'none';
   document.getElementById("adminTab").style.display = tab === 'admin' ? 'block' : 'none';
+  if (tab === 'admin') loadBookings();
 }
 
 openTab('booking'); // default tab
