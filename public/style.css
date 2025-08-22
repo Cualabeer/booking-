@@ -7,95 +7,29 @@
 
 /* Body */
 body {
-  font-family: Arial, sans-serif;
-  background: #f0f2f5;
-  padding: 10px;
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  background: #f8f9fa;
   min-height: 100vh;
-  width: 100%;
-  display: block;   /* let content flow naturally */
 }
 
-/* Toggle Buttons */
-#userTypeToggle {
-  margin-bottom: 20px;
-  width: 100%;
-  display: flex;
-  gap: 10px;
-}
-#userTypeToggle button {
-  flex: 1;
-  padding: 12px 0;
-  font-size: 18px;
-  border: 1px solid #007bff;
-  background: #007bff;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-#userTypeToggle button:hover { background: #0056b3; }
-
-/* Customer Form Section */
-#customerSection {
-  width: 100%;            /* fill the screen on mobile */
-  padding: 20px;
-  margin-bottom: 20px;
-  background: white;
-  border-radius: 0;        /* flush with edges on phones */
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
-}
-
-#bookingForm input,
-#bookingForm select,
-#bookingForm textarea,
-#bookingForm button {
-  width: 100%;
-  padding: 16px;
-  font-size: 16px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-}
-
-#bookingForm button {
-  background: #28a745;
-  color: white;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-#bookingForm button:hover { background: #218838; }
-
-/* Admin Section */
+/* Sections */
+#customerSection,
 #adminSection {
   width: 100%;
+  background: #fff;
   padding: 20px;
-  background: white;
-  border-radius: 0;
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
-}
-
-/* Admin Header */
-#adminHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 20px;
-}
-#burgerBtn {
-  font-size: 28px;
-  background: none;
-  border: none;
-  cursor: pointer;
+  border-radius: 0; /* mobile: full width flush */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* Off-canvas Menu */
+/* Admin Nav */
 #adminNav {
   position: fixed;
   top: 0;
   right: 0;
-  width: 80%;
-  max-width: 260px;
+  width: 85%;
+  max-width: 280px;
   height: 100%;
   background: #343a40;
   color: white;
@@ -111,46 +45,31 @@ body {
 #adminNav.show { transform: translateX(0); }
 #adminNav button {
   width: 100%;
-  padding: 15px;
-  font-size: 16px;
+  padding: 16px;
+  font-size: 18px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   background: #007bff;
   color: white;
   cursor: pointer;
-  text-align: left;
-  transition: background 0.3s ease;
 }
 #adminNav button:hover { background: #0056b3; }
 
 /* Bookings Table */
-#bookingsView {
-  overflow-x: auto;
-  margin-top: 20px;
+#bookingsView table {
+  font-size: 15px;
 }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 16px;
-}
-th, td {
-  border: 1px solid #ccc;
-  padding: 12px;
-  text-align: left;
-}
-th { background: #007bff; color: white; }
 
-/* Larger screens: bring back max-width and rounded corners */
+/* Larger screens: center card style */
 @media (min-width: 600px) {
   #customerSection,
   #adminSection {
     max-width: 600px;
     margin: 0 auto 20px;
-    border-radius: 10px;
+    border-radius: 12px;
   }
 }
 @media (min-width: 900px) {
   #customerSection { max-width: 500px; }
   #adminSection { max-width: 900px; }
-  #userTypeToggle button { font-size: 16px; padding: 10px 0; }
 }
